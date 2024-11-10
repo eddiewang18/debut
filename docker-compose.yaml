@@ -1,0 +1,45 @@
+
+version: '3.8'
+
+services:
+  # Django 服務
+  backend:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+    container_name: django_app
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - .env  # 引用根目錄的 .env 文件
+
+  # Vue 服務
+  frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    container_name: vue_app
+    ports:
+      - "4173:4173"
+    depends_on:
+      - backend
+
+  # MySQL 服務
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}  # 從 .env 引用 DATABASE_PASSWORD
+      MYSQL_DATABASE: ${DATABASE_NAME}          # 從 .env 引用 DATABASE_NAME
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
