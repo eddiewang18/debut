@@ -19,13 +19,34 @@ services:
       - .env  # 引用根目錄的 .env 文件
 
   # Vue 服務
+  # frontend:
+  #   build:
+  #     context: .
+  #     dockerfile: ./frontend/Dockerfile
+  #   container_name: vue_app
+  #   ports:
+  #     - "4173:4173"
+  #   volumes:
+  #     - ./frontend/src:/app/src       # 僅掛載源碼目錄
+  #     - ./frontend/public:/app/public # 掛載 public 資料夾
+  #     - ./frontend/package.json:/app/package.json # 掛載 package.json
+  #     - ./frontend/vite.config.js:/app/vite.config.js # 如果有 Vite 配置檔案
+  #     - /app/node_modules             # 保留容器中的 node_modules 資料夾
+  #   depends_on:
+  #     - backend
   frontend:
     build:
       context: .
       dockerfile: ./frontend/Dockerfile
     container_name: vue_app
     ports:
-      - "4173:4173"
+      - "3000:4173"
+    volumes:
+      - ./frontend/src:/app/src       # 僅掛載源碼目錄
+      - ./frontend/public:/app/public # 掛載 public 資料夾
+      - ./frontend/package.json:/app/package.json # 掛載 package.json
+      - ./frontend/vite.config.js:/app/vite.config.js # 如果有 Vite 配置檔案
+      - /app/node_modules             # 保留容器中的 node_modules 資料夾
     depends_on:
       - backend
 

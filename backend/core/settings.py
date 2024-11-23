@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv # test needed
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,17 +21,29 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+load_dotenv() # test needed
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS =[
-    'localhost', 
-    '127.0.0.1',
-    "http://localhost:4173/"
+# ALLOWED_HOSTS =[
+#     'localhost', 
+#     '127.0.0.1',
+# ]
+
+ALLOWED_HOSTS = ['*']
+
+
+CORS_EXPOSE_HEADERS = (
+'Content-Disposition',
+)
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4173",  # Vue.js 默認的開發伺服器地址,這只是範例，實際要參照你Vue的伺服器位置
+    "http://192.168.0.183:4173"
 ]
+
 
 
 # Application definition
@@ -44,6 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'machine' # app
 ]
 
 MIDDLEWARE = [
@@ -80,14 +94,14 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.getenv("DATABASE_NAME"),
         'USER': os.getenv("DATABASE_USER"),
         'PASSWORD': os.getenv("DATABASE_PASSWORD"),
-        'HOST': "mysql_db",
+        # 'HOST': "mysql_db",
+        "HOST":os.getenv("DATABASE_HOST"),
         'PORT': os.getenv("DATABASE_PORT"),
     }
 }

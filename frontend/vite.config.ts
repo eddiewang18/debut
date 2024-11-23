@@ -16,7 +16,7 @@ export default defineConfig({
     },
   },
   server: {
-    host: true, // 使服務可被外部訪問
+    host: '0.0.0.0', 
     port: 4173
   },
 })
