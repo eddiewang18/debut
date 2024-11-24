@@ -12,7 +12,7 @@
                         <label for="recipient-name" class="col-form-label">{{ queryField.field_name }}</label>
                         <input v-model="queryFields[index].field_value" @keyup="q_instantly(queryField.unique,index)" :type="queryField.input_type" class="form-control" id="recipient-name">
                         <br/>
-                        <div @click="setOption2Qfield(result.name,index)" class="q_options" v-for="result in q_result" v-if="queryField.unique && sure">
+                        <div @click="setOption2Qfield(result.name,index,result.id)" class="q_options" v-for="result in q_result" v-if="queryField.unique && sure">
                             <div class="q_options_inner"  :pk="result.id" :key="result.id">
                                 {{ result.name }}
                             </div>
@@ -77,8 +77,8 @@ function q_instantly(unique, index) {
     }
 }
 
-function setOption2Qfield(val, q_field_index) {
-    emit('updateQueryField', { index: q_field_index, value: val });
+function setOption2Qfield(val, q_field_index,id) {
+    emit('query2backend4data',{ index: q_field_index, value: val,id:id });
     sure.value = false;
 
 }
@@ -88,8 +88,6 @@ watch(() => props.q_result, (newVal) => {
         props.queryFields[0].field_value = newVal[0].name;
         sure.value = false;
         // 清空輸入框
-        // props.queryFields[0].field_value = '';
-        // emit('updateQueryField', { index: 0, value: "" });
         emit('query2backend4data', newVal[0]);
 
     }

@@ -168,9 +168,7 @@ function query2backend4data(machine_obj) {
 
 function updateQueryField({ index, value }) {
   queryFields[index].field_value = value;
-  // console.log("updateQueryField=>")
-  // console.log(queryFields);
-  
+
 }
 
 watch(queryFields, (newFields) => {
