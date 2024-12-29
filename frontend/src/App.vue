@@ -8,6 +8,7 @@
         <div class="links">
           <RouterLink to="/" class="nav-link">首頁</RouterLink>
           <RouterLink to="/machine" class="nav-link">機種設定</RouterLink>
+          <RouterLink to="/machine_line_record" class="nav-link">填寫日報</RouterLink>
         </div>
       </nav>
       

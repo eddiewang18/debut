@@ -1,11 +1,14 @@
 import modal from "@/components/modal.vue";
 import axios from "axios";
 import { ref } from "vue";
+import useUtils from "../useUtils";
 
 
 // export function (rows,del_existed_rows,machine,successFlag,dynamicStatusClass) {
 export default function (rows,del_existed_rows,machine,query,msgModal,delShow,dynamicStatusClass,successFlag) {
     
+    let [isInteger] = useUtils()
+
     let msg = ref("");
 
     async function save() {
@@ -51,15 +54,53 @@ export default function (rows,del_existed_rows,machine,query,msgModal,delShow,dy
           ]
         */
       
+        let machine_req_data = machine.value       
+        if (machine_req_data.connecting_plate != 0 && !isInteger(machine_req_data.connecting_plate)) { 
+          successFlag.value = false;
+          dynamicStatusClass.value = false
+          msg.value = "連版數量 須為整數";
+          msgModal.value.myModal_show();
+          return;
+        }
+        
+        if (machine_req_data.machine_amt !=0 && !isInteger(machine_req_data.machine_amt)) { 
+          successFlag.value = false;
+          dynamicStatusClass.value = false
+          msg.value = "機種台數 須為整數";
+          msgModal.value.myModal_show();
+          return;
+        }      
+      
         let machine_line_create_update = []
         let machine_line_del = []
         for (let i = 0; i < rows.value.length; i++) { 
           let row = rows.value[i]
           delete row['selected']
-          if (row['machine_line_name']) { 
-            machine_line_create_update.push(row)
+
+          if (!row['machine_line_name']) { 
+            successFlag.value = false;
+            dynamicStatusClass.value = "fail"
+            msg.value = `第${i+1}列 線名 不可空白`;
+            msgModal.value.myModal_show();
+            return;
           }
-          
+
+          if (row['emp_default_amt'] != 0 && !row['emp_default_amt']) { 
+            successFlag.value = false;
+            dynamicStatusClass.value = "fail"
+            msg.value = `第${i+1}列 員工數 不可空白`;
+            msgModal.value.myModal_show();
+            return;
+          }
+
+          if (row['emp_default_amt'] != 0 && !isInteger(row['emp_default_amt'])) { 
+            successFlag.value = false;
+            dynamicStatusClass.value = "fail"
+            msg.value = `第${i+1}列 員工數 須為整數`;
+            msgModal.value.myModal_show();
+            return;            
+          }
+            machine_line_create_update.push(row) 
         }
       
         for (let i = 0; i < del_existed_rows.value.length; i++) { 
@@ -69,7 +110,7 @@ export default function (rows,del_existed_rows,machine,query,msgModal,delShow,dy
         }
       
         let req_data = {
-          "machine": machine.value,
+          "machine": machine_req_data,
           "machine_line_create_update": machine_line_create_update,
           "machine_line_del": machine_line_del,
         }
@@ -90,6 +131,7 @@ export default function (rows,del_existed_rows,machine,query,msgModal,delShow,dy
           }
         } catch (error) {
           successFlag.value = false;
+          dynamicStatusClass.value = "fail"
           msg.value = "錯誤";
         }
         msgModal.value.myModal_show();

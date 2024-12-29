@@ -1,10 +1,14 @@
 <template>
-    <h1>首頁</h1>
+    <Report></Report>
 </template>
 
 <script>
+import Report from './Report.vue';
 export default {
-        name:"Home"
+        name:"Home",
+        components: {
+            Report, // 註冊子組件
+        },
     }
 </script>
 

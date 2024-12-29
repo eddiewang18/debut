@@ -132,7 +132,8 @@ let [rows, addRow, delRow, toggleSelectAll, del_existed_rows,handleCheckBox,sele
 // 操作查詢邏輯
 let [query] = useQuery(machine,rows,delShow)
 // 儲存資料邏輯
-let [msg,save] = useSave(rows,del_existed_rows,machine,query,msgModal,delShow,dynamicStatusClass,successFlag)
+let [msg, save] = useSave(rows, del_existed_rows, machine, query, msgModal, delShow, dynamicStatusClass, successFlag)
+
 
 async function queryByMachineName(field_infos) {
 

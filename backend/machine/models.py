@@ -25,13 +25,14 @@ class Machine_line(models.Model):
 
 class Machine_line_record(models.Model):
     record_id = models.AutoField(primary_key=True,db_column="record_id")
+    machine_id = models.ForeignKey(Machine, on_delete=models.CASCADE,to_field='machine_id',db_column='machine_id')
     machine_line_id = models.ForeignKey(Machine_line, on_delete=models.CASCADE,to_field='machine_line_id',db_column='machine_line_id')
     production_day = models.DateField(db_column='production_day',null=True,blank=True)
-    machine_line_amt = models.IntegerField(db_column='machine_line_amt',null=False,blank=False)
-    emp_amt = models.IntegerField(db_column='emp_amt',null=False,blank=False)
-    work_hours = models.IntegerField(db_column='work_hours',null=False,blank=False)
-    overhead_wire = models.CharField(db_column='overhead_wire', max_length=2,null=False,blank=False)
-    ng = models.CharField(db_column='ng', max_length=2,null=False,blank=False)
+    machine_line_amt = models.IntegerField(db_column='machine_line_amt',null=True,blank=True)
+    emp_amt = models.IntegerField(db_column='emp_amt',null=True,blank=True)
+    work_hours = models.IntegerField(db_column='work_hours',null=True,blank=True)
+    overhead_wire = models.CharField(db_column='overhead_wire', max_length=2,null=True,blank=True)
+    ng = models.CharField(db_column='ng', max_length=200,null=True,blank=True)
     cdatetime = models.DateTimeField(db_column='cdatetime', auto_now=False, auto_now_add=True)
     mdatetime = models.DateTimeField(db_column='mdatetime', auto_now=True, auto_now_add=False)
 

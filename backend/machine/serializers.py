@@ -12,3 +12,13 @@ class MachineSerializer(serializers.ModelSerializer):
         model = Machine
         fields = "__all__"
 
+class Machine_line_record_Serializer(serializers.ModelSerializer):
+    tot_work_hours = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Machine_line_record
+        fields = "__all__"
+
+    def get_tot_work_hours(self, obj):
+
+        return obj.emp_amt * obj.work_hours 

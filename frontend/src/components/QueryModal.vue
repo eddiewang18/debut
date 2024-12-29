@@ -55,6 +55,7 @@ onMounted(() => {
         backdrop: 'static',
         focus: true,
     });
+    emit('qModalMounted'); // 通知父組件
 });
 
 const myModal_show = () => {
